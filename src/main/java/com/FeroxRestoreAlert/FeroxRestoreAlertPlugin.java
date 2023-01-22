@@ -52,7 +52,7 @@ public class FeroxRestoreAlertPlugin extends Plugin {
     private int currentPrayerValue = 0;
     private int maxHitpointsValue = 0;
     private int currentHitpointsValue = 0;
-    private final int maxEnergyValue = 100;
+    private final int maxEnergyValue = 90;
     private int currentEnergyPercentage = 0;
     private final WorldArea feroxArea = new WorldArea(3123, 3617, 31, 21, 0);
 
@@ -113,7 +113,7 @@ public class FeroxRestoreAlertPlugin extends Plugin {
     }
 
     public boolean checkStatsAreRestored() {
-        return currentPrayerValue == maxPrayerValue && currentHitpointsValue == maxHitpointsValue && currentEnergyPercentage == maxEnergyValue;
+        return currentPrayerValue == maxPrayerValue && currentHitpointsValue == maxHitpointsValue && currentEnergyPercentage > maxEnergyValue;
     }
 
     @Provides
