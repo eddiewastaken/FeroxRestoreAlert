@@ -52,34 +52,31 @@ public class FeroxRestoreAlertPlugin extends Plugin {
     private int currentPrayerValue = 0;
     private int maxHitpointsValue = 0;
     private int currentHitpointsValue = 0;
-    private final int maxEnergyValue = 100;
+    private int customEnergyRestoreValue = 0;
     private int currentEnergyPercentage = 0;
     private final WorldArea feroxArea = new WorldArea(3123, 3617, 31, 21, 0);
+    int tickCounter = 0;
 
     @Subscribe
     public void onGameTick(GameTick event) {
         updateMaxStatValues();
         updateCurrentStatValues();
+        customEnergyRestoreValue = config.getCustomEnergyRestoreValue();
 
         WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-        if (feroxArea.contains(playerLocation)) {
-            if(!checkStatsAreRestored())
-            {
-                if(tickCounter % 2 == 0) {
-                    feroxRestoreAlertOverlay.showOverlay();
-                }
-                else {
-                    feroxRestoreAlertOverlay.hideOverlay();
-                }
-                tickCounter++;
-            } else {
-                feroxRestoreAlertOverlay.hideOverlay();
-                tickCounter = 0;
-            }
+        if (feroxArea.contains(playerLocation) && !checkStatsAreRestored() && tickCounter % 2 == 0) {
+            feroxRestoreAlertOverlay.showOverlay();
+            tickCounter++;
+        } else {
+            feroxRestoreAlertOverlay.hideOverlay();
+            tickCounter = 0;
+        }
+
+        if (!feroxArea.contains(playerLocation) || checkStatsAreRestored()) {
+            feroxRestoreAlertOverlay.hideOverlay();
         }
     }
-    int tickCounter = 0;
 
     public void updateMaxPrayerValue() {
         maxPrayerValue = client.getRealSkillLevel(Skill.PRAYER);
@@ -98,7 +95,7 @@ public class FeroxRestoreAlertPlugin extends Plugin {
     }
 
     public void updateCurrentEnergyPercentage() {
-        currentEnergyPercentage = Math.floorDiv(client.getEnergy(), maxEnergyValue);
+        currentEnergyPercentage = Math.floorDiv(client.getEnergy(), 100);
     }
 
     public void updateMaxStatValues() {
@@ -113,12 +110,13 @@ public class FeroxRestoreAlertPlugin extends Plugin {
     }
 
     public boolean checkStatsAreRestored() {
-        return currentPrayerValue == maxPrayerValue && currentHitpointsValue == maxHitpointsValue && currentEnergyPercentage == maxEnergyValue;
+        return currentPrayerValue == maxPrayerValue &&
+               currentHitpointsValue == maxHitpointsValue &&
+               currentEnergyPercentage >= customEnergyRestoreValue;
     }
 
     @Provides
-    FeroxRestoreAlertConfig provideConfig(ConfigManager configManager)
-    {
+    FeroxRestoreAlertConfig provideConfig(ConfigManager configManager) {
         return configManager.getConfig(FeroxRestoreAlertConfig.class);
     }
 }

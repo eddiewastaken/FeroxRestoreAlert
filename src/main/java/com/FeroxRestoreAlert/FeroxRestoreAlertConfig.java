@@ -2,14 +2,10 @@ package com.FeroxRestoreAlert;
 
 import java.awt.Color;
 
-import net.runelite.client.config.Alpha;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.*;
 
 @ConfigGroup("FeroxRestoreAlert")
-public interface FeroxRestoreAlertConfig extends Config
-{
+public interface FeroxRestoreAlertConfig extends Config {
 	@Alpha
 	@ConfigItem(
 			keyName = "textColor",
@@ -17,8 +13,7 @@ public interface FeroxRestoreAlertConfig extends Config
 			description = "Color of text in alert overlay",
 			position = 0
 	)
-	default Color getTextColor()
-	{
+	default Color getTextColor() {
 		return Color.WHITE;
 	}
 
@@ -29,8 +24,7 @@ public interface FeroxRestoreAlertConfig extends Config
 			description = "Color of background in alert overlay",
 			position = 1
 	)
-	default Color getBackgroundColor()
-	{
+	default Color getBackgroundColor() {
 		return new Color(0, 142, 0);
 	}
 
@@ -40,8 +34,21 @@ public interface FeroxRestoreAlertConfig extends Config
 			description = "Changes where the alert is displayed",
 			position = 2
 	)
-	default AlertPosition getAlertPosition()
-	{
+	default AlertPosition getAlertPosition() {
 		return AlertPosition.TOP_LEFT;
+	}
+
+	@Range(
+			min = 1,
+			max = 100
+	)
+	@ConfigItem(
+			keyName = "customEnergyValue",
+			name = "Energy Threshold",
+			description = "% for Energy to be considered restored",
+			position = 5
+	)
+	default int getCustomEnergyRestoreValue() {
+		return 100;
 	}
 }

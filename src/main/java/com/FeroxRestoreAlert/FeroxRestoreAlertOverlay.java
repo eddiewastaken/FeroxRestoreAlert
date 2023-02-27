@@ -16,16 +16,18 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 public class FeroxRestoreAlertOverlay extends Overlay
 {
-    private final PanelComponent panelComponent = new PanelComponent();
-    private final Client client;
     @Inject
     private FeroxRestoreAlertConfig config;
+    private final Client client;
+    private final PanelComponent panelComponent = new PanelComponent();
     private final OverlayManager overlayManager;
-    private boolean isShowing = false;
+    private boolean isVisible = false;
 
     @Inject
-    private FeroxRestoreAlertOverlay(FeroxRestoreAlertPlugin plugin, Client client, FeroxRestoreAlertConfig config, OverlayManager overlayManager)
-    {
+    private FeroxRestoreAlertOverlay(FeroxRestoreAlertPlugin plugin,
+                                     Client client,
+                                     FeroxRestoreAlertConfig config,
+                                     OverlayManager overlayManager) {
         super(plugin);
         setPriority(OverlayPriority.LOW);
         this.client = client;
@@ -34,29 +36,25 @@ public class FeroxRestoreAlertOverlay extends Overlay
         addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Ferox Restore Alert overlay");
     }
 
-    public void showOverlay()
-    {
-        if (!isShowing)
+    public void showOverlay() {
+        if (!isVisible)
         {
-            isShowing = true;
+            isVisible = true;
             overlayManager.add(this);
         }
     }
 
-    public void hideOverlay()
-    {
-        if (isShowing)
+    public void hideOverlay() {
+        if (isVisible)
         {
-            isShowing = false;
+            isVisible = false;
             overlayManager.remove(this);
         }
     }
 
     @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if(!isShowing)
-        {
+    public Dimension render(Graphics2D graphics) {
+        if(!isVisible) {
             return null;
         }
 
