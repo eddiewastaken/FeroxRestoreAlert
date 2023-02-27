@@ -49,6 +49,6 @@ public interface FeroxRestoreAlertConfig extends Config {
 			position = 5
 	)
 	default int getCustomEnergyRestoreValue() {
-		return 100;
+		return 90;
 	}
 }
